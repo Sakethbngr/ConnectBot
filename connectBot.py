@@ -148,7 +148,7 @@ def main():
             if current_request >= config["max_connections_per_search"]: break
 
             # Searches for people in general
-            driver.get(f"https://www.linkedin.com/search/results/people/?keywords={searchTerm}")
+            driver.get(f'https://www.linkedin.com/search/results/people/?keywords={searchTerm}&network=%5B"S"%2C"O"%5D')
             
             print_lg("\n________________________________________________________________________________________________________________________\n")
             print_lg(f'\n>>>> Now searching for "{searchTerm}" <<<<\n\n')
@@ -175,9 +175,9 @@ def main():
                     # Get name and profile url
                     link_element = person.find_element(By.TAG_NAME, 'a')
                     profile_url = link_element.get_attribute('href')
-                    person_name = "Unknown"
+                    person_name = ""
                     try:
-                        title_element = person.find_element(By.CLASS_NAME, "entity-result__title-line")
+                        title_element = person.find_element(By.XPATH, '//span[@dir="ltr"]//span[@aria-hidden="true"]')
                         person_name = title_element.text.split("\n")[0]
                         if "1st" in title_element.text.lower():
                             print_lg(f'Skipping "{person_name}", Profile URL: {profile_url}. Is already a connection')
